@@ -1021,8 +1021,15 @@ func (c *Context) Value(key interface{}) interface{} {
 	}
 	return nil
 }
-
 func (c *Context) GetAbsoluteRouter() string {
+	oldIndexValue := c.index
+	c.reset()
+	theRouter :=c.getAbsoluteRouter();
+
+	c.index = oldIndexValue
+	return theRouter
+}
+func (c *Context) getAbsoluteRouter() string {
   absoluteRouter :=""
 	httpMethod := c.Request.Method
 	rPath := c.Request.URL.Path
