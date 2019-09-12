@@ -1021,3 +1021,38 @@ func (c *Context) Value(key interface{}) interface{} {
 	}
 	return nil
 }
+
+func (c *Context) GetAbsoluteRouter() string {
+  absoluteRouter :=""
+	httpMethod := c.Request.Method
+	rPath := c.Request.URL.Path
+	unescape := false
+	if c.engine.UseRawPath && len(c.Request.URL.RawPath) > 0 {
+		rPath = c.Request.URL.RawPath
+		unescape = c.engine.UnescapePathValues
+	}
+	rPath = cleanPath(rPath)
+
+	// Find root of the tree for the given HTTP method
+	t := c.engine.trees
+	for i, tl := 0, len(t); i < tl; i++ {
+		if t[i].method != httpMethod {
+			continue
+		}
+		root := t[i].root
+		// Find route in tree
+		_, params, _ := root.getValue(rPath, c.Params, unescape)
+		if params != nil  {
+
+			for i:=0;i<len(params);i++{
+				rPath =strings.ReplaceAll(rPath,params[i].Value,":"+params[i].Key)
+			}
+
+			return rPath
+		}
+
+		break
+	}
+
+	return absoluteRouter
+}
