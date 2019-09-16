@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 	"sync"
 
 	"github.com/gin-gonic/gin/render"
@@ -386,6 +387,13 @@ func (engine *Engine) handleHTTPRequest(c *Context) {
 		if handlers != nil {
 			c.handlers = handlers
 			c.Params = params
+
+			routerPath:=rPath
+			for i:=0;i<len(params);i++{
+				routerPath =strings.ReplaceAll(routerPath,params[i].Value,":"+params[i].Key)
+			}
+			c.ResourcePath=routerPath
+
 			c.Next()
 			c.writermem.WriteHeaderNow()
 			return

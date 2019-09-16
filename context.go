@@ -59,6 +59,9 @@ type Context struct {
 
 	// Accepted defines a list of manually accepted formats for content negotiation.
 	Accepted []string
+
+	//后台资源路径
+	ResourcePath string
 }
 
 /************************************/
@@ -1021,6 +1024,9 @@ func (c *Context) Value(key interface{}) interface{} {
 	}
 	return nil
 }
+
+/*
+ * 过时,存在缺陷
 func (c *Context) GetAbsoluteRouter() string {
 	oldIndexValue := c.index
 	c.reset()
@@ -1063,3 +1069,4 @@ func (c *Context) getAbsoluteRouter() string {
 
 	return rPath
 }
+*/
