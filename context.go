@@ -1030,7 +1030,7 @@ func (c *Context) GetAbsoluteRouter() string {
 	return theRouter
 }
 func (c *Context) getAbsoluteRouter() string {
-  absoluteRouter :=""
+
 	httpMethod := c.Request.Method
 	rPath := c.Request.URL.Path
 	unescape := false
@@ -1051,15 +1051,15 @@ func (c *Context) getAbsoluteRouter() string {
 		_, params, _ := root.getValue(rPath, c.Params, unescape)
 		if params != nil  {
 
-			for i:=0;i<len(params);i++{
-				rPath =strings.ReplaceAll(rPath,params[i].Value,":"+params[i].Key)
-			}
-
-			return rPath
+		for i:=0;i<len(params);i++{
+			rPath =strings.ReplaceAll(rPath,params[i].Value,":"+params[i].Key)
 		}
+
+		return rPath
+	}
 
 		break
 	}
 
-	return absoluteRouter
+	return rPath
 }
